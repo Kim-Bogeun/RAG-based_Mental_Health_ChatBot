@@ -40,9 +40,8 @@ async def query_explanation(
 ):
     try:
         prompt = await search_similar_and_build_prompt(
-            user_situation=req.situation,
-            user_thought=req.thought,
-            session=session
+            req.thought,
+            session
         )
         if not prompt:
             return ExplanationResponse(
@@ -58,7 +57,7 @@ async def query_explanation(
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-
+    
 # === 라우터 등록 ===
 app.include_router(router, prefix="/api")
 
