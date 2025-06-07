@@ -3,7 +3,6 @@
 import os
 import asyncio
 
-# ── Streamlit이 torch 내부를 감시하지 않도록 반드시 streamlit import 전에 설정 ──
 os.environ["STREAMLIT_WATCH_SKIP_PACKAGES"] = "torch"
 
 import streamlit as st
@@ -27,7 +26,7 @@ if st.button("Analyze Thought"):
         st.stop()
 
     async def main():
-        # 1) DB 초기화 (최초 1회만 해도 된다면 생략 가능)
+        # 1) DB 초기화
         await init_db()
 
         # 2) AsyncSession 열기
@@ -45,8 +44,6 @@ if st.button("Analyze Thought"):
 
                 # (2.2) LLM 호출
                 answer = await ask_llm(prompt)
-
-                # ── 여기부터 수정 구간 ──
 
                 # (2.3-1) users 테이블에 user_id가 없으면 추가 (ON CONFLICT DO NOTHING)
                 await session.execute(
@@ -73,7 +70,6 @@ if st.button("Analyze Thought"):
 
                 # (2.4) 커밋
                 await session.commit()
-                # ── 수정 구간 끝 ──
 
         # (3) 결과 출력
         st.subheader("🧾 Generated Explanation")
