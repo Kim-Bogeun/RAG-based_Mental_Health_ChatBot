@@ -1,1 +1,1 @@
-# BKMS1_RAG
+# BKMS1_term_project
